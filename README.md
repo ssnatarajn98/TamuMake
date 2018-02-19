@@ -15,4 +15,4 @@ When doing certain motions over the Leap Motion sensor, the Beaglebone will rece
 * Ismael Rodriguez
 * Seth Barberee
 * Amon
-* Yamen
+* Yamen Almasalmeh
