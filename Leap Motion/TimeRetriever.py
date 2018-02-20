@@ -3,7 +3,7 @@ def TimeRetriever(count):
     from gtts import gTTS
     import playsound, os
 
-    tts = gTTS(datetime.now().strftime('%H:%M:%S'))
+    tts = gTTS("The current time is: " + datetime.now().strftime('%H:%M:%S'))
 
     try:
         tts.save("Time" + str(count) + ".mp3")

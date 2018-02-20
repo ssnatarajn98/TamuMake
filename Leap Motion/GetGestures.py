@@ -1,5 +1,4 @@
-import os, sys, inspect, time, Leap, requests, threading, WeatherRetriever, json, TwitterFeed, TimeRetriever
-from datetime import datetime
+import os, sys, inspect, time, Leap ,requests, threading, WeatherRetriever, json, TwitterFeed, TimeRetriever
 src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 
 
@@ -27,7 +26,7 @@ def CheckOpen(hands, past_hands):
 def CheckPinch(hands, past_hands):
     for i in range(len(hands)):
         try:
-            if hands[i].pinch_strength > 0.3 and hands[i].pinch_strength - past_hands[i].pinch_strength > 0.45:
+            if hands[i].pinch_strength - past_hands[i].pinch_strength > 0.2:
                 return True
         except IndexError:
             return False
@@ -36,7 +35,7 @@ def CheckPinch(hands, past_hands):
 def CheckWaveRight(hands, past_hands):
     for i in range(len(hands)):
         try:
-            if hands[i].palm_velocity[0] > 600:
+            if hands[i].palm_velocity[0] > 400:
                 return True
         except IndexError:
             return False
@@ -44,7 +43,7 @@ def CheckWaveRight(hands, past_hands):
 def CheckWaveLeft(hands, past_hands):
     for i in range(len(hands)):
         try:
-            if hands[i].palm_velocity[0] < -600:
+            if hands[i].palm_velocity[0] < -400:
                 return True
         except IndexError:
             return False
@@ -52,7 +51,7 @@ def CheckWaveLeft(hands, past_hands):
 def CheckWaveUp(hands, past_hands):
     for i in range(len(hands)):
         try:
-            if hands[i].palm_velocity[1] > 600:
+            if hands[i].palm_velocity[1] > 400:
                 return True
         except IndexError:
             return False
@@ -60,7 +59,7 @@ def CheckWaveUp(hands, past_hands):
 def CheckWaveDown(hands, past_hands):
     for i in range(len(hands)):
         try:
-            if hands[i].palm_velocity[1] < -600:
+            if hands[i].palm_velocity[1] < -400:
                 return True
         except IndexError:
             return False
@@ -78,38 +77,37 @@ def main():
         hands = frame.hands
         past_hands = past_frame.hands
 
-        if CheckFist(hands, past_hands):
-            print "Fist"
-            requests.get(url='http://a2f2af9c.ngrok.io/dangerText')
-            time.sleep(0.4)
-
-        elif CheckOpen(hands, past_hands):
+        if CheckOpen(hands, past_hands):
             print "Open"
-            #requests.get(" http://9ce23523.ngrok.io/bitch")
-            time.sleep(0.7)
+            time.sleep(0.3)
+
+        elif CheckFist(hands, past_hands):
+            print "Fist"
+            requests.get(url='http://d1099c9b.ngrok.io/dangerText')
+            time.sleep(0.3)
 
         elif CheckWaveRight(hands, past_hands):
             print "Wave Right"
             TimeRetriever.TimeRetriever(count)
             count+=1
-            time.sleep(0.4)
+            time.sleep(0.3)
 
         elif CheckWaveLeft(hands, past_hands):
             print "Wave Left"
-            requests.get(url= 'http://a2f2af9c.ngrok.io/waveOut')
-            time.sleep(0.4)
+            requests.get(url= 'http://d1099c9b.ngrok.io/waveOut')
+            time.sleep(0.3)
 
         elif CheckWaveUp(hands, past_hands):
             print "Wave Up"
             TwitterFeed.TwitterFeed(count)
             count += 1
-            time.sleep(0.4)
+            time.sleep(0.3)
 
         elif CheckWaveDown(hands, past_hands):
             print "Wave Down"
             WeatherRetriever.Weather(count)
             count+=1
-            time.sleep(0.4)
+            time.sleep(0.3)
 
         elif CheckPinch(hands, past_hands):
             time.sleep(0.3)
@@ -119,11 +117,11 @@ def main():
             hands = frame.hands
             past_hands = past_frame.hands
             print "Pinched", hands[0].pinch_strength
-            url = "http://a2f2af9c.ngrok.io/giveme"
+            url = "http://d1099c9b.ngrok.io/giveme"
             payload = {"PinchVal": hands[0].pinch_strength}
             headers = {'content-type' : 'application/json'}
             requests.post(url= url, data= json.dumps(payload), headers= headers)
-            time.sleep(0.4)
+            time.sleep(0.3)
 
 
 

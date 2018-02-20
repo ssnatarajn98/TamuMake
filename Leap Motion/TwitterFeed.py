@@ -43,5 +43,7 @@ def TwitterFeed(count):
         playsound.playsound("tweets" + str(count) + ".mp3", True)
     except:
         pass
-
-    os.remove("tweets" + str(count) + ".mp3")
+    try:
+        os.remove("tweets" + str(count) + ".mp3")
+    except:
+        pass
